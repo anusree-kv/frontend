@@ -1,0 +1,88 @@
+
+<h2>CV Form</h2>
+
+<form [formGroup]="cvForm" (ngSubmit)="submit()">
+
+  <input formControlName="name" placeholder="Name">
+  <input formControlName="email" placeholder="Email">
+  <input formControlName="phone" placeholder="Phone">
+  <textarea formControlName="summary" placeholder="Summary"></textarea>
+
+  <!-- EXPERIENCES -->
+  <h3>Experience</h3>
+  <div formArrayName="experiences">
+    <div *ngFor="let exp of experiences.controls; let i = index"
+         [formGroupName]="i">
+
+      <input formControlName="title" placeholder="Job Title">
+      <input formControlName="company" placeholder="Company">
+      <input formControlName="start" placeholder="Start Date">
+      <input formControlName="end" placeholder="End Date">
+
+      <button type="button" (click)="experiences.removeAt(i)">Remove</button>
+    </div>
+  </div>
+
+  <button type="button" (click)="addExperience()">Add Experience</button>
+
+  <!-- EDUCATION -->
+  <h3>Education</h3>
+  <div formArrayName="education">
+    <div *ngFor="let edu of education.controls; let i = index"
+         [formGroupName]="i">
+
+      <input formControlName="degree" placeholder="Degree">
+      <input formControlName="institution" placeholder="Institution">
+      <input formControlName="year" placeholder="Year">
+
+      <button type="button" (click)="education.removeAt(i)">Remove</button>
+    </div>
+  </div>
+
+  <button type="button" (click)="addEducation()">Add Education</button>
+
+  <input formControlName="skills" placeholder="Skills">
+
+  <br><br>
+  <button type="submit">
+    {{ editingId ? 'Update CV' : 'Save CV' }}
+  </button>
+
+  <button type="button" (click)="reset()">Clear</button>
+
+</form>
+
+<hr>
+
+<!-- ===================== -->
+<!-- USERS LIST -->
+<!-- ===================== -->
+
+<h2>Saved CV List</h2>
+
+<table border="1" width="100%">
+  <tr>
+    <th>Name</th>
+    <th>Email</th>
+    <th>Phone</th>
+    <th>Actions</th>
+  </tr>
+
+  <tr *ngFor="let user of users">
+    <td>{{ user.name }}</td>
+    <td>{{ user.email }}</td>
+    <td>{{ user.phone }}</td>
+    <td>
+      <button (click)="edit(user)">Edit</button>
+      <button (click)="delete(user.id)">Delete</button>
+      <button (click)="generate(user)">PDF</button>
+    </td>
+  </tr>
+</table>
+
+<br>
+
+<!-- PAGINATION -->
+<button (click)="prev()">Previous</button>
+<span> Page {{ page }} </span>
+<button (click)="next()">Next</button>
